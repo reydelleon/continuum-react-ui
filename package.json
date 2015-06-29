@@ -1,0 +1,31 @@
+{
+  "name": "continuum-ui",
+  "version": "0.1.0",
+  "description": "An exercise for the Continuum UI",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "start": "jsx --watch src/ build/ &"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reydelleon/continuum-react-ui.git"
+  },
+  "keywords": [
+    "ui",
+    "continuum"
+  ],
+  "author": "Reydel Leon Machado",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/reydelleon/continuum-react-ui/issues"
+  },
+  "homepage": "https://github.com/reydelleon/continuum-react-ui#readme",
+  "dependencies": {
+    "bootstrap": "^3.3.5",
+    "lodash": "^3.9.3"
+  },
+  "devDependencies": {
+    "express": "^4.13.0"
+  }
+}
