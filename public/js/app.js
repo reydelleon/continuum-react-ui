@@ -5,12 +5,63 @@
  * @license     Licensed under MIT license
  */
 
+var FilterableBuildTable = React.createClass({
+    getInitialState: function () {
+        return {
+            searchTerm: ''
+        }
+    },
+    handleUserInput: function (searchTerm) {
+        this.setState({
+            searchTerm: searchTerm
+        });
+    },
+    render: function () {
+        return (
+                <div id="filterable-build-table">
+                    <SearchBox
+                            searchTerm={this.state.searchTerm}
+                            onUserInput={this.handleUserInput}
+                            />
+                    <LatestBuildsTable
+                            builds={this.props.builds}
+                            searchTerm={this.state.searchTerm}/>
+                </div>
+        );
+    }
+});
+
+var SearchBox = React.createClass({
+    handleChange: function () {
+        this.props.onUserInput(
+                this.refs.searchTermInput.getDOMNode().value
+        );
+    },
+    render: function () {
+        return (
+                <form>
+                    <input
+                            type="text"
+                            placeholder="Search..."
+                            value={this.props.searchTerm}
+                            ref="searchTermInput"
+                            onChange={this.handleChange}
+                            />
+                </form>
+        );
+    }
+});
+
 var LatestBuildsTable = React.createClass({
     render: function () {
         var rows = [];
         this.props.builds.forEach(function (build) {
+            if (build.projectName.indexOf(this.props.searchTerm) === -1) {
+                return;
+            }
+            
             rows.push(<BuildRow build={build}/>);
-        });
+        }.bind(this));
 
         return (
                 <table className="table table-hover">
@@ -24,7 +75,7 @@ var LatestBuildsTable = React.createClass({
                     </tr>
                     </thead>
                     <tbody>
-                        {rows}
+                    {rows}
                     </tbody>
                 </table>
         );
@@ -46,7 +97,7 @@ var BuildRow = React.createClass({
 });
 
 var builds = [
-    { id: 1, projectName: "Project X", gitCommit: "2827771e1e12", status: "In Progress", duration: "00:00:32" },
+    { id: 1, projectName: "Space X", gitCommit: "2827771e1e12", status: "In Progress", duration: "00:00:32" },
     { id: 2, projectName: "Continuum", gitCommit: "2827771e1e12", status: "Failed", duration: "00:00:32" },
     { id: 3, projectName: "Space X", gitCommit: "2827771e1e12", status: "Completed", duration: "00:00:32" },
     { id: 4, projectName: "Craft", gitCommit: "2827771e1e12", status: "Completed", duration: "00:00:32" },
@@ -57,4 +108,4 @@ var builds = [
     { id: 9, projectName: "Babayaga", gitCommit: "2827771e1e12", status: "Completed", duration: "00:00:32" }
 ];
 
-React.render(<LatestBuildsTable builds={builds}/>, document.getElementById('latest-builds-table-container'));
+React.render(<FilterableBuildTable builds={builds}/>, document.getElementById('latest-builds-table-container'));
